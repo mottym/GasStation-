@@ -1,0 +1,7 @@
+{
+  "name": "@gas-station/shared-types",
+  "version": "0.0.1",
+  "private": true,
+  "main": "database.types.ts",
+  "types": "database.types.ts"
+}

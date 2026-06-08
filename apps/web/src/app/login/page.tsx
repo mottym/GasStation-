@@ -25,7 +25,7 @@ export default function LoginPage() {
       authError = result.error;
     } catch {
       setError(
-        'Cannot reach Supabase. Start local backend: open a terminal in the project folder and run `supabase start`, then `supabase db reset` and `npm run seed:users`.'
+        'Cannot reach Supabase. Check apps/web/.env.local has your project URL and anon key from the Supabase dashboard.'
       );
       setLoading(false);
       return;

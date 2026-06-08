@@ -1,6 +1,6 @@
--- Seed data for local development
--- Users are created via auth; this seed assumes migration runs after auth users exist.
--- Use scripts/seed-users.mjs after `supabase db reset` OR run inline via service role.
+-- Demo seed data. Run ONLY after all migrations in supabase/migrations/ (in order).
+-- Hosted Supabase: SQL Editor → run each migration file, then this file, then scripts/seed-users.mjs.
+-- Users are created via auth; run scripts/seed-users.mjs after this seed to create login accounts.
 
 -- Demo company
 INSERT INTO companies (id, name, billing_email)

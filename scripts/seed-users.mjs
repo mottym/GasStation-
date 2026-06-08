@@ -1,12 +1,39 @@
 #!/usr/bin/env node
 /**
  * Creates auth users + profiles for local dev.
- * Run after: supabase start && supabase db reset
+ * Run after: supabase start && supabase db reset (local)
+ *   or apply supabase/seed.sql on hosted Supabase first.
  * Usage: node scripts/seed-users.mjs
+ * Reads apps/web/.env.local when SUPABASE_URL is not set.
  */
 import { createClient } from '@supabase/supabase-js';
+import { readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const url = process.env.SUPABASE_URL || 'http://127.0.0.1:54321';
+function loadEnvLocal() {
+  const envPath = resolve(dirname(fileURLToPath(import.meta.url)), '../apps/web/.env.local');
+  try {
+    for (const line of readFileSync(envPath, 'utf8').split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const eq = trimmed.indexOf('=');
+      if (eq === -1) continue;
+      const key = trimmed.slice(0, eq).trim();
+      const value = trimmed.slice(eq + 1).trim();
+      if (!process.env[key]) process.env[key] = value;
+    }
+  } catch {
+    /* optional file */
+  }
+}
+
+loadEnvLocal();
+
+const url =
+  process.env.SUPABASE_URL ||
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  'http://127.0.0.1:54321';
 const serviceKey =
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_KEY ||
